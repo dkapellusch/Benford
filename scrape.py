@@ -50,14 +50,14 @@ def insert_data(data: pd.DataFrame):
     data.to_sql('numbers', engine, if_exists='append', index=False)
 
 
-def benford(i):
+def benford(request_size=50):
     columns = ['word_count', 'letter_count', 'number_count',
                'ones', 'twos', 'threes',
                'fours', 'fives', 'sixes',
                'sevens', 'eights', 'nines',
                'url', 'title', 'numbers']
     df = pd.DataFrame(columns=columns)
-    for j in range(20):
+    for i in range(request_size):
         try:
             random_article = fetch_article()
             title = random_article.title
@@ -77,7 +77,7 @@ def benford(i):
         except Exception as ex:
             print(ex)
             continue
-        df.loc[j] = row
+        df.loc[i] = row
     insert_data(df)
     print(f"finished batch {i}")
 
